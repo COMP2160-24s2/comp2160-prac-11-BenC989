@@ -79,13 +79,30 @@ public class UIManager : MonoBehaviour
 
     private void MoveCrosshair() 
     {
-        Vector2 mousePos = mouseAction.ReadValue<Vector2>(); // Screen coordinates?
+        Vector2 mousePos = mouseAction.ReadValue<Vector2>();
 
-        float zPos = 9.5f;
+        Plane plane = new Plane(-Vector3.up, 0.5f); // 0.5f is the position of the marble
+
+        // Create a ray from the Mouse click position
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        // Initialise the enter variable
+        float enter = 0.0f;
+
+        if (plane.Raycast(ray, out enter))
+        {
+            // Get the point that is clicked
+            Vector3 hitPoint = ray.GetPoint(enter);
+
+            // Move the crosshair to the point clicked
+            crosshair.position = hitPoint;
+        }
 
         // FIXME: Move the crosshair position to the mouse position (in world coordinates)
+        /*Vector2 mousePos = mouseAction.ReadValue<Vector2>(); // Screen coordinates?
+        float zPos = 9.5f;
         Vector3 worldCoords = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, zPos));
-        crosshair.position = new Vector3(worldCoords.x, worldCoords.y, worldCoords.z);
+        crosshair.position = new Vector3(worldCoords.x, worldCoords.y, worldCoords.z);*/
     }
 
     private void SelectTarget()
