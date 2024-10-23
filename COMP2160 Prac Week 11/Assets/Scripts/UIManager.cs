@@ -79,10 +79,13 @@ public class UIManager : MonoBehaviour
 
     private void MoveCrosshair() 
     {
-        Vector2 mousePos = mouseAction.ReadValue<Vector2>();
+        Vector2 mousePos = mouseAction.ReadValue<Vector2>(); // Screen coordinates?
+
+        float zPos = 9.5f;
 
         // FIXME: Move the crosshair position to the mouse position (in world coordinates)
-        // crosshair.position = ...;
+        Vector3 worldCoords = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, zPos));
+        crosshair.position = new Vector3(worldCoords.x, worldCoords.y, worldCoords.z);
     }
 
     private void SelectTarget()
